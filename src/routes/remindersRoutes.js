@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { ReminderController } from "../controllers/reminderController";
+import { ReminderController } from "../controllers/reminderController.js";
 
 const router = Router();
 
 
-router.get("/", ReminderController);
+router.get("/", ReminderController.getAllReminders);
 
 router.get("/:id", (req, res) => {
   res.send("Get single reminder by id");
