@@ -4,7 +4,8 @@ export const ReminderController = {
     }, 
 
     async getRemindersById(req, res) {
-          res.send("Get single reminder by id");
+        const reminderId = parseInt(req.params.id)
+          res.send(`Get single reminder by ${reminderId}`);
     },
 
     async createReminder(req, res) {
@@ -12,12 +13,14 @@ export const ReminderController = {
 },
 
 async updateReminder(req, res) {
-     res.send("Update some fields for existing reminder");
+    const reminderId = parseInt(req.params.id);
+     res.send(`Update some fields for existing ${reminderId}`);
 
 },
 
 async deleteReminder(req, res) {
-     res.send("Delete a reminder");
+     const reminderId = parseInt(req.params.id);
+     res.send(`Delete a reminder ${reminderId}`);
 },
 
 async deleteAllReminder(req, res) {
