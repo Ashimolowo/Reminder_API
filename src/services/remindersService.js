@@ -1,4 +1,4 @@
-export const reminderService = {
+export const ReminderService = {
   async getAllReminders() {
     //fetch all reminders
     return []

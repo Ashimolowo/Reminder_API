@@ -1,31 +1,64 @@
+import { ReminderService } from "../services/remindersService.js";
+
 export const ReminderController = {
-    async getAllReminders(req, res) {
-         res.send("Get all reminders");
-    }, 
+  async getAllReminders(req, res) {
+    try {
+      const reminders = ReminderService.getAllReminders();
+      res.status(200).json(reminders);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Eror" });
+    }
+  },
 
-    async getRemindersById(req, res) {
-        const reminderId = parseInt(req.params.id)
-          res.send(`Get single reminder by ${reminderId}`);
-    },
+  async getRemindersById(req, res) {
+    try {
+      const reminderId = parseInt(req.params.id);
+      const reminder = ReminderService.getRemindersById(reminderId);
+      res.status(200).json(reminder);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Eror" });
+    }
+  },
 
-    async createReminder(req, res) {
-        const reminder = req.body.reminder
-        console.log(req.body)
-  res.send(reminder);
-},
+  async createReminder(req, res) {
+    try {
+        const reminder = ReminderService.createReminder(req.body);
+        
+        res.status(200).json(reminder);
+    } catch (error) {
+        res.status(500).send({ message: 'Internal Server Error'})
+    }
+  },
 
-async updateReminder(req, res) {
-    const reminderId = parseInt(req.params.id);
-     res.send(`Update some fields for existing ${reminderId}`);
+  async updateReminder(req, res) {
+    try {
+        const reminderId = parseInt(req.params.id);
+        const reminder = ReminderService.updateReminder(reminderId, req.body)
+        res.status(200).json(reminder)
+    } catch (error) {
+         res.status(500).send({ message: "Internal Server Eror" });
+   
+    }},
 
-},
+  async deleteReminder(req, res) {
+    try {
+        const reminderId = parseInt(req.params.id);
+        const reminder = ReminderService.deleteReminder(reminderId);
+        res.status(200).json(reminder)
+    } catch (error) {
+         res.status(500).send({ message: "Internal Server Eror" });
+   
+    }
 
-async deleteReminder(req, res) {
-     const reminderId = parseInt(req.params.id);
-     res.send(`Delete a reminder ${reminderId}`);
-},
+    res.send('Delete old reminder')
+  },
 
-async deleteAllReminder(req, res) {
-    res.send("Delete all reminder");
-}
-}
+  async deleteAllReminder(req, res) {
+    try {
+        const reminders = ReminderService.deleteAllReminder();
+        res.status(200).json(reminders);
+    } catch (error) {
+        res.status(500).send('Internal Server Error')
+    }
+  },
+};
