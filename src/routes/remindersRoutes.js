@@ -6,24 +6,14 @@ const router = Router();
 
 router.get("/", ReminderController.getAllReminders);
 
-router.get("/:id", (req, res) => {
-  res.send("Get single reminder by id");
-});
+router.get("/:id", ReminderController.getRemindersById);
 
-router.post("/", (req, res) => {
-  res.send("Create a new reminder");
-});
+router.post("/", ReminderController.createReminder);
 
-router.patch("/:id", (req, res) => {
-  res.send("Update some fields for existing reminder");
-});
+router.patch("/:id", ReminderController.updateReminder);
 
-router.delete("/:id", (req, res) => {
-  res.send("Delete a reminder");
-});
+router.delete("/:id", ReminderController.deleteReminder);
 
-router.delete("/", (req, res) => {
-  res.send("Delete all reminder");
-});
+router.delete("/", ReminderController.deleteAllReminder);
 
 export default router;
