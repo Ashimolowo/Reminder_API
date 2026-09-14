@@ -1,24 +1,41 @@
-import db from '../config/db.js';
+import db from "../config/db.js";
 
 export const RemiderModel = {
-    async getAll() {
-        const result = db.query('SELECT * FROM reminders ORDER BY created_at DESC');
-        //return (await result).rows
-        return result.rows;
-    },
+  async getAll() {
+    const result = await db.query(
+      "SELECT * FROM reminders ORDER BY created_at DESC",
+    );
+    return result.rows;
+  },
 
-    async findById(id) {
-      const result = db.query("SELECT * FROM reminders WHERE id = $1", [id]);
-      //return (await result).rows[0]
-      return result.rows[0];
-    },
+  async findById(id) {
+    const result = await db.query("SELECT * FROM reminders WHERE id = $1", [
+      id,
+    ]);
 
-    async create({ reminder, notes, userId}) {
-      const result = db.query(
-        "INSERT INTO reminders (reminder, notes, user_id) VALUES ($1, $2, $3) RETUNINING *",
-        [reminder, notes, userId],
-      );
-      //return (await result).rows
-      return result.rows;
-    }
+    return result.rows[0];
+  },
+
+  async create({ reminder, notes, userId }) {
+    const result = await db.query(
+      "INSERT INTO reminders (reminder, notes, user_id) VALUES ($1, $2, $3) RETUNINING *",
+      [reminder, notes, userId],
+    );
+
+    return result.rows;
+  },
+
+  async delete(reminderId){
+    const result = await db.query('DELETE FROM reminders WHERE id = $1', [reminderId])
+    return result.rowCount;
+},
+
+async deleteAll(){
+    const result = await db.query('DELETE FROM reminders')
+    return result.rowCount;
+},  
+
+async update(){
+    //logic will be added later
 }
+};
