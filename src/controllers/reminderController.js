@@ -9,7 +9,9 @@ export const ReminderController = {
     },
 
     async createReminder(req, res) {
-  res.send("Create a new reminder");
+        const reminder = req.body.reminder
+        console.log(req.body)
+  res.send(reminder);
 },
 
 async updateReminder(req, res) {
