@@ -1,4 +1,6 @@
+import ERROR_MESSAGES from "../constants/errorMessages.js";
 import { ReminderModel } from "../models/reminderModel.js";
+import CustomError from "../utils/CustomError.js";
 
 // Helper function to convert camelCase to snake_case
 const toSnakeCase = (str) =>
@@ -12,7 +14,7 @@ export const ReminderService = {
   async getRemindersById(reminderId) {
     const reminder = await ReminderModel.findById(reminderId);
     if (!reminder) {
-      throw new Error("Reminder not found");
+      throw new CustomError(ERROR_MESSAGES.REMINDER_NOT_FOUND, 404);
     }
     return reminder;
   },
@@ -35,10 +37,7 @@ export const ReminderService = {
     const fields = Object.keys(newValues);
 
     // Convert camelCase keys to snake_case for database columns
-    const setClauses = fields.map((key, index) => {
-      const dbColumn = toSnakeCase(key);
-      return `${dbColumn} = $${index + 1}`;
-    });
+    const setClauses = fields.map((key, index) => `${key} = $${index + 1}`);
 
     const values = Object.values(newValues);
     values.push(reminderId);
@@ -49,7 +48,7 @@ export const ReminderService = {
 
     const updateReminder = await ReminderModel.update(query, values);
     if (!updateReminder) {
-      throw new Error("Reminder not found");
+      throw new CustomError(ERROR_MESSAGES.REMINDER_NOT_FOUND, 404);
     }
     return updateReminder;
   },
@@ -60,17 +59,17 @@ export const ReminderService = {
     const reminder = await ReminderModel.findById(reminderId);
 
     if (!reminder) {
-      throw new Error("Reminder not found");
+      throw new CustomError(ERROR_MESSAGES.REMINDER_NOT_FOUND, 404);
     }
 
     if (reminder.user_id !== authenticatedUserId) {
-      throw new Error("You are not authorized");
+      throw new CustomError(ERROR_MESSAGES.UNAUTHORIZED, 401);
     }
 
     const rowCount = await ReminderModel.delete(reminderId);
 
     if (rowCount === 0) {
-      throw new Error("Failed to delete a reminder");
+      throw new CustomError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR, 500);
     }
     return { message: "Reminder deleted successfully" };
   },
