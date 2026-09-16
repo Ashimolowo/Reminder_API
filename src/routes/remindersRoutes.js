@@ -14,6 +14,6 @@ router.patch("/:id", ReminderController.updateReminder);
 
 router.delete("/:id", ReminderController.deleteReminder);
 
-router.delete("/", ReminderController.deleteAllReminder);
+router.delete("/", ReminderController.deleteAllReminders);
 
 export default router;
